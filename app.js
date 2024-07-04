@@ -23,7 +23,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 /* Middleware */
 app.use(
   cors({
-    origin: "https://gallery-react-query.vercel.app",
+    origin: "https://family-gallery-ten.vercel.app",
   })
 );
 app.use(express.json());
@@ -43,7 +43,7 @@ const { MONGO_USERNAME, MONGO_PASSWORD } = process.env;
 
 mongoose
 .connect(
-  `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.hbkqtqv.mongodb.net/ImageGallery`,
+  `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.hbkqtqv.mongodb.net/FamilyGallery`,
    
  
 )
