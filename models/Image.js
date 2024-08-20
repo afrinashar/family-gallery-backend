@@ -15,11 +15,17 @@ const imageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: String,  // Category is now a string with only one value
+    required: true,
+    enum: ['fero', 'leo', 'pio', 'rabi'], // Optional: restrict to these categories
+  },
   createdAt: {
     type: Date,
     default: new Date(),
   },
 });
+
 imageSchema.plugin(mongoosePaginate);
 
 const Image = mongoose.model('photos', imageSchema);

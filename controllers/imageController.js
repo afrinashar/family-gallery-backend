@@ -5,70 +5,81 @@ const Image = require('../models/Image');
 const imageController = {
   getAllImages: async (req, res) => {
     try {
-      const { searchTerm, page = 1, limit = 10, sortBy = 'name', sortOrder = 'asc' } = req.query;
+      const { searchTerm, page = 1, limit = 10, sortBy = 'name', sortOrder = 'asc', category } = req.query;
 
       const query = {};
       if (searchTerm) {
-        query.name = { $regex: searchTerm, $options: 'i' }; // Case insensitive search
+        query.name = { $regex: searchTerm, $options: 'i' }; // Case-insensitive search
       }
-    
+      if (category) {
+        query.category = category; // Filter by category
+      }
+
       const options = {
         page: parseInt(page, 10),
         limit: parseInt(limit, 10),
         sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 },
       };
-    
+
       const photos = await Image.paginate(query, options);
       res.json(photos);
     } catch (error) {
       res.status(400).json('Error: ' + error);
     }
   },
+
   getImagesById: async (req, res) => {
     try {
-      const images = await Image.findById();
-      res.json(images);
+      const image = await Image.findById(req.params.id); // Use the correct ID from params
+      if (!image) {
+        return res.status(404).json({ msg: 'Image not found' });
+      }
+      res.json(image);
     } catch (err) {
-   //   req.flash('error_msg', 'Server Error');
       console.error(err);
       res.status(500).send('Server Error');
     }
   },
+
   createImage: async (req, res) => {
-   const { name, description } = req.body;
-  const imageUrl = `/uploads/${req.file.filename}`;
-//const {image}=req.file.imageUrl
+    const { name, description, category } = req.body; // Destructure category
+    const imageUrl = `/uploads/${req.file.filename}`;
+
     try {
-// if(!image){
-// res.status(400).send('image required')
-// }
+      // Simple validation
+      if (!name || !imageUrl || !category) {
+        return res.status(400).json({ msg: 'Please provide all required fields' });
+      }
 
+      const newPhoto = new Image({
+        name,
+        description,
+        imageUrl,
+        category,
+      });
 
-  const newPhoto = new Image({
-    name,
-    description,
-    imageUrl,
-  });
-
-       await newPhoto.save();
+      await newPhoto.save();
       res.json(newPhoto);
-     // req.flash('success_msg', 'Image uploaded successfully');
     } catch (err) {
-     // req.flash('error_msg', 'Server Error');
       console.error(err);
       res.status(500).send('Server Error');
-    } 
+    }
   },
 
   updateImage: async (req, res) => {
-    const { name, description } = req.body;
+    const { name, description, category } = req.body; // Also allow category updates
 
     try {
-      const updatedImage = await Image.findByIdAndUpdate(req.params.id, { name, description }, { new: true });
+      const updatedImage = await Image.findByIdAndUpdate(
+        req.params.id,
+        { name, description, category }, // Update category as well
+        { new: true }
+      );
+      if (!updatedImage) {
+        return res.status(404).json({ msg: 'Image not found' });
+      }
       res.json(updatedImage);
-  //    req.flash('success_msg', 'Image updated successfully');
     } catch (err) {
-   //   req.flash('error_msg', 'Server Error');
       console.error(err);
       res.status(500).send('Server Error');
     }
@@ -76,11 +87,12 @@ const imageController = {
 
   deleteImage: async (req, res) => {
     try {
-      await Image.findByIdAndRemove(req.params.id);
+      const image = await Image.findByIdAndRemove(req.params.id);
+      if (!image) {
+        return res.status(404).json({ msg: 'Image not found' });
+      }
       res.json({ msg: 'Image removed' });
-   //   req.flash('success_msg', 'Image removed successfully');
     } catch (err) {
-   //   req.flash('error_msg', 'Server Error');
       console.error(err);
       res.status(500).send('Server Error');
     }
