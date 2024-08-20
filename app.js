@@ -23,7 +23,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 /* Middleware */
 app.use(
   cors({
-    origin: "https://family-gallery-ten.vercel.app/",
+    origin: "*",
   })
 );
 app.use(express.json());
