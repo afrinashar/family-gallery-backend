@@ -26,7 +26,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 /* Middleware */
 app.use(
   cors({
-    origin: "https://family-gallery-fc4kml1oi-afrinashars-projects.vercel.app/",
+    origin: "https://family-gallery-fc4kml1oi-afrinashars-projects.vercel.app",
   })
 );
 app.use(express.json());
