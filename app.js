@@ -10,6 +10,7 @@ const path = require("path");
 const photos = require("./routes/imageRoutes");
 const bodyParser = require('body-parser');
 
+
 //const passport = require('./config/passport');
  //const authRouter =require("./routes/auth.route")
 const app = express();
@@ -17,13 +18,15 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 // Connect to MongoDB
+mongoose.set('strictQuery', true);
+
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Configure middleware
 /* Middleware */
 app.use(
   cors({
-    origin: "*",
+    origin: "https://family-gallery-fc4kml1oi-afrinashars-projects.vercel.app/",
   })
 );
 app.use(express.json());
