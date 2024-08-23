@@ -18,7 +18,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 // Connect to MongoDB
-mongoose.set('strictQuery', true);
+//mongoose.set('strictQuery', true);
 
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -26,7 +26,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 /* Middleware */
 app.use(
   cors({
-    origin: "https://family-gallery-fc4kml1oi-afrinashars-projects.vercel.app",
+    origin: "*",
   })
 );
 app.use(express.json());
