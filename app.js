@@ -46,7 +46,7 @@ const { MONGO_USERNAME, MONGO_PASSWORD } = process.env;
 
 mongoose
 .connect(
-  `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.hbkqtqv.mongodb.net/FamilyGallery`,
+  `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.hbkqtqv.mongodb.net/ImageGallery`,
    
  
 )
