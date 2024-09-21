@@ -18,7 +18,7 @@ const imageSchema = new mongoose.Schema({
   category: {
     type: String,  // Category is now a string with only one value
     required: true,
-    enum: ['fero', 'leo', 'pio', 'rabi'], // Optional: restrict to these categories
+    enum: ['fero', 'leo', 'pio', 'rabi','other'], // Optional: restrict to these categories
   },
   createdAt: {
     type: Date,
